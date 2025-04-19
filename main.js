@@ -41,7 +41,7 @@ function showwhishes(data){
                     const card = document.createElement('div');
                     card.classList = "card-body";
                     const content = `
-                        <div class="card col-md-3 border border-black " style="width: 18rem;height: 700px">
+                        <div class="card col-md-3 border border-black " style="width: 18rem;height: 550px">
                             <img src="${i.image}" class="card-img-top h-50" alt="">
                             <div class="card-body d-flex flex-column">
                                 <div class=" align-items-center">
@@ -54,11 +54,8 @@ function showwhishes(data){
                                     <div class="p-2">
                                         <p class="card-text">${i.category}</p>
                                     </div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="p-2">
-                                            <button  onclick="addtowish(${i.id})" class="btn btn-primary g-2">add to wish</button>
-                                        </div>
-                                        <div class="p-2">
+                                    <div class="p-2">
+                                        <div >
                                             <button onclick="deletefromwish(${i.id})" class="btn btn-primary ">delete from wishes</button>
                                         </div>
                                     </div>
@@ -80,7 +77,7 @@ function showwhishes(data){
             const card = document.createElement('div');
             card.classList="card-body" ;
             const content = `
-            <div class="card col-md-3 border border-black " style="width: 17rem;height: 600px">
+            <div class="card col-md-3 border border-black " style="width: 17rem;height: 550px">
                 <img src="${i.image}" class="card-img-top h-50" alt="">
                 <div class="card-body d-flex flex-column">
                      <div class=" d-flex flex-column mb-3">
