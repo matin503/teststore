@@ -14,18 +14,28 @@ function deletefromwish(id) {
     showwhishes();
 }
 
+function editproduct(id) {
+    data=data.map((item) => {
+        if (item.id === id)
+            return {...item, title:document.getElementById('title').value, category:document.getElementById('category').value, image:document.getElementById('image').value, rate:parseFloat(document.getElementById('rate').value),}
+
+    });
+
+    showproduct();
+}
+
 function showheader() {
     const container = document.getElementById('header');
     container.innerHTML = '';
     let content = ``;
-    switch (hederstat) {
+    switch (headerstat) {
         case 1:
             content = `
                 <div class="p-2">
                     <button onclick="showproduct()" type="button" class="btn btn-primary">products</button>
                 </div>
                  <div class="p-2">
-                    <button onclick="localStorage.clear(),showwhishes()" type="button" class="btn btn-primary">clear wishes</button>
+                    <button onclick="localStorage.clear() showwhishes()" type="button" class="btn btn-primary">clear wishes</button>
                 </div>
                 `;
             break;
@@ -37,13 +47,28 @@ function showheader() {
                 <div class="p-2">
                     <button onclick="showaddproduct()" type="button" class="btn btn-primary">Add Product</button>
                 </div>
+                <div class="p-2">
+                    <button onclick="showeditproduct()" type="button" class="btn btn-primary">Edit product</button>
+                </div>
+            `;
+            break;
+        case 2:
+            content = `
+                <div class="p-2">
+                    <button onclick="showwhishes()" type="button" class="btn btn-primary">wishes</button>
+                </div>
+                <div class="p-2">
+                    <button onclick="showproduct()" type="button" class="btn btn-primary">products</button>
+                </div>
             `;
     }
     container.innerHTML = content;
 }
 
 function showaddproduct() {
-    const container = document.getElementById('context');
+    headerstat = 2;
+    showheader();
+    let container = document.getElementById('context');
     container.innerHTML = `
         <form onsubmit="addNewProduct()">
             <div class="d-flex justify-content-center mt-4">
@@ -81,6 +106,42 @@ function showaddproduct() {
     `;
 }
 
+function showeditproduct() {
+    const id = parseInt(prompt('Enter Product ID'));
+    const product = data.find(item => item.id === id);
+    if (!product) return;
+
+    const container = document.getElementById('context');
+    container.innerHTML = `
+        <form onsubmit="editproduct(${id})">
+            <div class="d-flex justify-content-center mt-4">
+                <div class="bg-primary rounded-4 p-4" style="width: 400px">
+                    <div class="mb-3">
+                        <label for="edit-title" class="form-label">Title</label>
+                        <input id="edit-title" type="text" class="form-control" value="${product.title}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-category" class="form-label">Category</label>
+                        <input id="edit-category" type="text" class="form-control" value="${product.category}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-image" class="form-label">Image URL</label>
+                        <input id="edit-image" type="text" class="form-control" value="${product.image}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-rate" class="form-label">Rating</label>
+                        <input id="edit-rate" type="number" step="0.1" class="form-control" value="${product.rate}">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-dark">Save Changes</button>
+                        <button type="button" onclick="showproduct()" class="btn btn-secondary ms-2">Back</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    `;
+}
+
 function addNewProduct() {
     const title = document.getElementById('title').value;
     const category = document.getElementById('category').value;
@@ -107,7 +168,7 @@ function renderRatingStars(rating) {
 }
 
 function showwhishes() {
-    hederstat = 1;
+    headerstat = 1;
     showheader();
     const container = document.getElementById('context');
     container.innerHTML = '';
@@ -140,7 +201,7 @@ function showwhishes() {
 }
 
 function showproduct() {
-    hederstat = 0;
+    headerstat = 0;
     showheader();
     const container = document.getElementById('context');
     container.innerHTML = '';
@@ -178,8 +239,8 @@ function Product(id, title, rate, image, category) {
     this.category = category;
 }
 
-const data = [];
-let hederstat = 0;
+let data = [];
+let headerstat = 0;
 const url = "https://fakestoreapi.com/products";
 
 async function loadProducts() {
